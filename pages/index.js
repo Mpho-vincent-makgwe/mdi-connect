@@ -7,7 +7,7 @@ export default function Home() {
       <p className="mt-4">Connecting skilled & unskilled workers to industries</p>
       <div className="mt-6">
         <Link href="/register">
-          <a className="px-4 py-2 bg-blue-500 text-white rounded">Get Started</a>
+          <i className="px-4 py-2 bg-blue-500 text-white rounded">Get Started</i>
         </Link>
       </div>
     </div>

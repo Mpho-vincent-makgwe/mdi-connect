@@ -19,7 +19,7 @@ export default function Jobs() {
           <p>Sector: {job.sector}</p>
           <p>Required Applicants: {job.requiredApplicants}</p>
           <Link href={`/apply?id=${job._id}`}>
-            <a className="block mt-2 text-blue-500">Apply Now</a>
+            <i className="block mt-2 text-blue-500">Apply Now</i>
           </Link>
         </div>
       ))}
