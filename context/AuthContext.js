@@ -39,21 +39,29 @@ export const AuthProvider = ({ children }) => {
   };
     // Register function
     const register = async (userData) => {
-        const response = await fetch("/api/register", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(userData),
-        });
+      const response = await fetch("/api/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(userData),
+      });
     
-        const data = await response.json();
-        if (response.ok) {
-          setUser(data.user);
-          localStorage.setItem("user", JSON.stringify(data.user));
-          router.push("/questionnaire");
-        } else {
-          throw new Error(data.message);
+      const data = await response.json();
+      console.log("API Response:", data); // Debugging log
+    
+      if (response.ok) {
+        if (!data.user) {
+          console.error("Error: No user object in response");
+          return;
         }
-      };
+        setUser(data.user);
+        console.log("LoggedInUser :", data.user)
+        localStorage.setItem("user", JSON.stringify(data.user));
+        router.push("/questionnaire");
+      } else {
+        throw new Error(data.message);
+      }
+    };
+    
 
   return (
     <AuthContext.Provider value={{ user, login, logout, register }}>

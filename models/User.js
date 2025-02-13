@@ -1,12 +1,34 @@
 import mongoose from "mongoose";
+import bcrypt from "bcrypt";
 
 const UserSchema = new mongoose.Schema({
   name: String,
-  email: String,
-  role: { type: String, enum: ["skilled", "unskilled"], required: false },
+  email: { type: String, unique: true },
+  password: { type: String, required: true },
+  role: { type: String, enum: ["skilled", "unskilled"], default: "unskilled" },
   experience: String,
-  qualifications: [String],
+  documents: [
+    {
+      filePath: String,
+      fileType: String,
+      fileName: String,
+      fileUrl: String,
+    }
+  ],
   appliedJobs: [{ type: mongoose.Schema.Types.ObjectId, ref: "Job" }],
+  yearsOfExperience: { type: String, default: "" },
+  graduated: { type: String, default: "" },
+  currentlyInTertiary: { type: String, default: "" },
+  entryLevel: { type: String, default: "" },
+  sector: { type: String, default: "" },
+});
+
+// Hash password before saving
+UserSchema.pre("save", async function (next) {
+  if (this.isModified("password")) {
+    this.password = await bcrypt.hash(this.password, 10);
+  }
+  next();
 });
 
 export default mongoose.models.User || mongoose.model("User", UserSchema);

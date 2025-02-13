@@ -6,7 +6,7 @@ export default async function handler(req, res) {
   if (req.method === "POST") {
     await dbConnect();
 
-    const { name, email, password } = req.body;
+    const { name, email, password, experience, documents } = req.body;
 
     // Check if user already exists
     const existingUser = await User.findOne({ email });
@@ -22,10 +22,22 @@ export default async function handler(req, res) {
       name,
       email,
       password: hashedPassword,
+      experience,
+      documents,
     });
 
     await newUser.save();
-    res.status(201).json({ message: "User registered successfully!" });
+
+    // Exclude password from the response
+    const userResponse = {
+      _id: newUser._id,
+      name: newUser.name,
+      email: newUser.email,
+      experience: newUser.experience,
+      documents: newUser.documents,
+    };
+
+    res.status(201).json({ message: "User registered successfully!", user: userResponse });
   } else {
     res.status(405).json({ message: "Method Not Allowed" });
   }
