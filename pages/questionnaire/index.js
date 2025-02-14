@@ -24,13 +24,13 @@ const Questionnaire = () => {
   
     console.log("User Data:", user); // Debugging user data
   
-    if (!user || !user.id) {
+    if (!user || !user._id) {
       console.error("User not logged in or missing _id:", user);
       return;
     }
   
     const data = {
-      userId: user.id,
+      userId: user._id,
       answers,
     };
   

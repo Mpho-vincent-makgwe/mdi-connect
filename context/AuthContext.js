@@ -8,7 +8,6 @@ export const AuthProvider = ({ children }) => {
   const router = useRouter();
 
   useEffect(() => {
-    // Check if user exists in localStorage
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
       setUser(JSON.parse(storedUser));
@@ -26,7 +25,7 @@ export const AuthProvider = ({ children }) => {
     if (response.ok) {
       setUser(data.user);
       localStorage.setItem("user", JSON.stringify(data.user));
-      router.push("/dashboard");
+      router.replace("/dashboard");
     } else {
       throw new Error(data.message);
     }
@@ -35,33 +34,31 @@ export const AuthProvider = ({ children }) => {
   const logout = () => {
     setUser(null);
     localStorage.removeItem("user");
-    router.push("/login");
+    router.replace("/login");
   };
-    // Register function
-    const register = async (userData) => {
-      const response = await fetch("/api/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(userData),
-      });
-    
-      const data = await response.json();
-      console.log("API Response:", data); // Debugging log
-    
-      if (response.ok) {
-        if (!data.user) {
-          console.error("Error: No user object in response");
-          return;
-        }
-        setUser(data.user);
-        console.log("LoggedInUser :", data.user)
-        localStorage.setItem("user", JSON.stringify(data.user));
-        router.push("/questionnaire");
-      } else {
-        throw new Error(data.message);
+
+  const register = async (userData) => {
+    const response = await fetch("/api/register", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(userData),
+    });
+
+    const data = await response.json();
+    if (response.ok) {
+      if (!data.user) {
+        console.error("Error: No user object in response");
+        return;
       }
-    };
-    
+      setUser(data.user);
+      localStorage.setItem("user", JSON.stringify(data.user));
+      
+      // Redirect immediately after registration
+      router.replace("/questionnaire");
+    } else {
+      throw new Error(data.message);
+    }
+  };
 
   return (
     <AuthContext.Provider value={{ user, login, logout, register }}>

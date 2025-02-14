@@ -47,12 +47,22 @@ export default async function handler(req, res) {
             fileUrl: resumeFileUrl,
           },
         ],
-        appliedJobs: [jobId],
+        appliedJobs: [
+          {
+            jobId: jobId,
+            coverLetter: coverLetter,
+            resumeUrl: resumeFileUrl,
+          }
+        ],
       });
       await user.save();
     } else {
       // If the user exists, just update the appliedJobs and documents
-      user.appliedJobs.push(jobId);
+      user.appliedJobs.push({
+        jobId: jobId,
+        coverLetter: coverLetter,
+        resumeUrl: resumeFileUrl,
+      });
       if (resumeFileUrl) {
         user.documents.push({
           filePath: resumeFileUrl,
@@ -65,7 +75,15 @@ export default async function handler(req, res) {
     }
 
     // Add user to the job application list
-    job.appliedUsers.push(user._id);
+    job.appliedUsers.push({
+      userId: user._id,
+      name: user.name,
+      email: user.email,
+      phone: phone,
+      linkedin: linkedin,
+      coverLetter: coverLetter,
+      resumeUrl: resumeFileUrl,
+    });
     await job.save();
 
     res.json({ message: "Application submitted!" });

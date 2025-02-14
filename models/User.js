@@ -17,9 +17,10 @@ const UserSchema = new mongoose.Schema({
   ],
   appliedJobs: [
     {
-      job: { type: mongoose.Schema.Types.ObjectId, ref: "Job" },
+      jobId: { type: mongoose.Schema.Types.ObjectId, ref: "Job" },
       coverLetter: String,
       resumeUrl: String,
+      appliedAt: { type: Date, default: Date.now }, // Add application timestamp
     }
   ],
   yearsOfExperience: { type: String, default: "" },
@@ -28,7 +29,6 @@ const UserSchema = new mongoose.Schema({
   entryLevel: { type: String, default: "" },
   sector: { type: String, default: "" },
 });
-
 
 // Hash password before saving
 UserSchema.pre("save", async function (next) {

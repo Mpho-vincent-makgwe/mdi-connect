@@ -42,7 +42,7 @@ export default function UploadDocuments() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!user?.id) {
+    if (!user?._id) {
       alert("You must be logged in to upload documents.");
       return;
     }
@@ -62,7 +62,7 @@ export default function UploadDocuments() {
       }
     });
 
-    formData.append("userId", user.id);
+    formData.append("userId", user._id);
 
     try {
       const response = await fetch("/api/documents", {
