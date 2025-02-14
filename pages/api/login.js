@@ -4,7 +4,7 @@ import dbConnect from "../../utils/dbConnect";
 
 export default async function handler(req, res) {
   if (req.method === "POST") {
-    await dbConnect();
+    await dbConnect("MDI-Connect");
 
     const { email, password } = req.body;
 

@@ -1,10 +1,10 @@
-import Link from "next/link";
+import JobList from "../../components/JobList/JobList";
 import { useContext, useEffect, useState } from "react";
 import AuthContext from "../../context/AuthContext";
 
 export default function Dashboard() {
   const { user, logout } = useContext(AuthContext);
-  const [jobs, setJobs] = useState([]);
+  const [jobs, setJobs] = useState([]); // Make sure jobs is initialized as an empty array
 
   useEffect(() => {
     if (!user) return;
@@ -19,29 +19,29 @@ export default function Dashboard() {
     fetch(`/api/jobs`, {
       method: 'GET',
       headers: {
-        'Authorization': `Bearer ${user._id}`
-      }
+        'Authorization': `Bearer ${user._id}`,
+      },
     })
-      .then((res) => {
-        console.log("Response:", res);
-        return res.json();
-      })
+      .then((res) => res.json())
       .then((data) => {
         console.log("Fetched data:", data);
         if (Array.isArray(data)) {
-          setJobs(data);
+          setJobs(data); // Ensure jobs is set as an array
         } else {
-          setJobs([]);
+          setJobs([]); // In case data is not an array
         }
       })
       .catch((error) => {
         console.error("Error fetching jobs:", error);
-        setJobs([]);
+        setJobs([]); // Handle error and ensure jobs is still an array
       });
   }, [user]);
 
   if (!user) {
     return <p>Please log in</p>;
+  }
+  if(!jobs){
+    return
   }
 
   return (
@@ -49,20 +49,7 @@ export default function Dashboard() {
       <h1>Welcome, {user.name}!</h1>
       <div className="p-6 max-w-4xl mx-auto">
         <h2 className="text-2xl font-bold mb-4">Available Jobs</h2>
-        {jobs.length === 0 ? (
-          <p>Currently, there are no available jobs for this sector.</p>
-        ) : (
-          jobs.map((job) => (
-            <div key={job._id} className="border p-4 mb-4 rounded shadow">
-              <h3 className="text-lg font-semibold">{job.title}</h3>
-              <p>Sector: {job.sector}</p>
-              <p>Required Applicants: {job.requiredApplicants}</p>
-              <Link href={`/apply?_id=${job._id}`} className="block mt-2 text-blue-500">
-                Apply Now
-              </Link>
-            </div>
-          ))
-        )}
+        <JobList jobs={jobs} />
       </div>
       <button onClick={logout} className="bg-red-500 text-white px-4 py-2 rounded">
         Logout

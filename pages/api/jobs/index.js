@@ -8,7 +8,7 @@ export default async function handler(req, res) {
   console.log("Request Method:", req.method);
 
   // Establish a database connection
-  await dbConnect();
+  await dbConnect("MDI-Connect");
   console.log("Database connected successfully");
 
   if (req.method === "GET") {

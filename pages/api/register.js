@@ -4,7 +4,7 @@ import bcrypt from "bcrypt";
 
 export default async function handler(req, res) {
   if (req.method === "POST") {
-    await dbConnect();
+    await dbConnect("MDI-Connect");
 
     const { name, email, password, experience, documents } = req.body;
 

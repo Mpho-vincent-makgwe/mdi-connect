@@ -8,7 +8,7 @@ if (!MONGODB_URI) {
 
 let isConnected = false; // Track connection status
 
-export default async function dbConnect() {
+export default async function dbConnect(dbName) {
   if (isConnected) {
     console.log("Using existing MongoDB connection");
     return;
@@ -16,7 +16,7 @@ export default async function dbConnect() {
 
   try {
     const db = await mongoose.connect(MONGODB_URI, {
-      dbName: "MDI-Connect", // Add this if your connection string doesn't specify the DB
+      dbName: dbName, // Add this if your connection string doesn't specify the DB
     });
 
     isConnected = db.connections[0].readyState === 1;

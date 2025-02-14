@@ -19,7 +19,7 @@ export default async function handler(req, res) {
     return res.status(405).json({ message: "Method Not Allowed" });
   }
 
-  await dbConnect(); // Connect to MongoDB
+  await dbConnect("MDI-Connect"); // Connect to MongoDB
 
   upload.array("files")(req, res, async (err) => {
     if (err) {

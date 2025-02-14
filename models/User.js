@@ -15,13 +15,20 @@ const UserSchema = new mongoose.Schema({
       fileUrl: String,
     }
   ],
-  appliedJobs: [{ type: mongoose.Schema.Types.ObjectId, ref: "Job" }],
+  appliedJobs: [
+    {
+      job: { type: mongoose.Schema.Types.ObjectId, ref: "Job" },
+      coverLetter: String,
+      resumeUrl: String,
+    }
+  ],
   yearsOfExperience: { type: String, default: "" },
   graduated: { type: String, default: "" },
   currentlyInTertiary: { type: String, default: "" },
   entryLevel: { type: String, default: "" },
   sector: { type: String, default: "" },
 });
+
 
 // Hash password before saving
 UserSchema.pre("save", async function (next) {

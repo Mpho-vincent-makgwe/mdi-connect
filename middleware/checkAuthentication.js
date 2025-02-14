@@ -3,7 +3,7 @@ import User from "../models/User";
 import dbConnect from "../utils/dbConnect";
 
 const checkAuthentication = (handler) => async (req, res) => {
-  await dbConnect();
+  await dbConnect("MDI-Connect");
 
   // Get token from Authorization header
   const authHeader = req.headers.authorization;

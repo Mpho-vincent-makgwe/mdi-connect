@@ -6,7 +6,7 @@ const handleQuestionnaire = async (req, res) => {
   if (req.method === "POST") {
     console.log("Received POST data:", req.body); // Debugging request data
 
-    await dbConnect();
+    await dbConnect("MDI-Connect");
 
     const { userId, answers } = req.body;
     if (!userId || !answers) {
